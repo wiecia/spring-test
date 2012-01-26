@@ -1,7 +1,6 @@
 package com.wiecia.springtest.config;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.Properties;
 
 import javax.sql.DataSource;
@@ -59,17 +58,5 @@ public class PersistenceConfig {
 	public DataSource dataSource() {
 		return new EmbeddedDatabaseBuilder().setType(EmbeddedDatabaseType.HSQL)
 				.build();
-	}
-
-	public static void main(String[] args) {
-
-		PersistenceConfig cfg = new PersistenceConfig();
-
-		URL url = cfg.getClass().getResource(
-				"/META-INF/conf/hibernate.properties");
-		System.out.println(url);
-		Properties prop = cfg.hibernateProperties();
-
-		System.out.println(prop.size());
 	}
 }

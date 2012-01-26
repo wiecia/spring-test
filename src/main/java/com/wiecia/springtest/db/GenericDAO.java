@@ -8,6 +8,8 @@ import java.util.List;
 public interface GenericDAO<E extends GenericEntity> {
 	// , PK extends Serializable> {
 
+	void setClazz(Class<E> clazz);
+
 	E get(Long id);
 
 	void save(E entity);

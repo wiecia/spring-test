@@ -10,7 +10,9 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Email;
 
 @Entity
-public class Person {
+public class Person extends AbstractEntity {
+
+	private static final long serialVersionUID = -7389267037459060155L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -18,18 +20,20 @@ public class Person {
 
 	@Column(length = 32)
 	private String name;
-	
+
 	private Integer age;
-	
+
 	@Email
 	@NotNull
 	@Column(unique = true)
 	private String email;
 
+	@Override
 	public Long getId() {
 		return id;
 	}
 
+	@Override
 	public void setId(Long id) {
 		this.id = id;
 	}
@@ -57,5 +61,5 @@ public class Person {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
+
 }
