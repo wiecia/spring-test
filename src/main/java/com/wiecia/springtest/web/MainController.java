@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.wiecia.springtest.db.model.Animal;
 import com.wiecia.springtest.db.model.Animal.AnimalType;
@@ -57,12 +58,18 @@ public class MainController {
 		car2.setCarModel(RandomStringUtils.randomAlphabetic(4));
 		personService.getCarDao().save(car2);
 
-		List<Car> cars = personService.getCarDao().getAllFords();
+		// List<Car> cars = personService.getCarDao().getAllFords();
 		// for (Car c : cars) {
 		// LOG.info(c.toString());
 		// }
 
 		return "index";
+	}
+
+	@RequestMapping("/getFords")
+	@ResponseBody
+	public List<Car> getFords() {
+		return personService.getCarDao().getAllFords();
 	}
 
 }
