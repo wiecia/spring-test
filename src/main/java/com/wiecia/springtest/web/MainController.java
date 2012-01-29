@@ -43,8 +43,7 @@ public class MainController {
 		Animal animal = new Animal();
 		animal.setName("Fluffy-" + RandomStringUtils.randomAlphanumeric(3));
 
-		animal.setType(AnimalType.values()[new Random().nextInt(AnimalType
-				.values().length)]);
+		animal.setType(AnimalType.values()[new Random().nextInt(AnimalType.values().length)]);
 		personService.getAnimalDao().save(animal);
 		LOG.info(animal.toString());
 
@@ -66,7 +65,7 @@ public class MainController {
 		return "index";
 	}
 
-	@RequestMapping("/getFords")
+	@RequestMapping(value = "/getFords")
 	@ResponseBody
 	public List<Car> getFords() {
 		return personService.getCarDao().getAllFords();

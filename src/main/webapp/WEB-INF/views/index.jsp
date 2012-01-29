@@ -14,7 +14,7 @@
 <html>
 <head>
 	<s:url value="/resources/js/jquery.pnotify.js" var="pnotify_js_url"/>
-	<s:url value="/resources/js/jquery-ui-1.8.17.custom.js" var="jqueryui_js"/>
+	<s:url value="/resources/js/jquery-1.7.1.min.js" var="jqueryui_js"/>
 	<s:url value="/resources/js/core/messagesController.js" var="sjs_messages"/>
 	
 	<s:url value="/resources/css/jquery.pnotify.default.css" var="pnotify_css_url"/>
@@ -29,6 +29,14 @@
 	<script type="text/javascript" src="${jqueryui_js}"> <!-- //fixme --> </script>
 	<script type="text/javascript" src="${pnotify_js_url}"> <!-- //fixme --> </script>
 	<script type="text/javascript" src="${sjs_messages}"> <!-- //fixme --> </script>
+	
+	<!-- script type="text/javascript">
+	jQuery(document).ready(function() {
+			$('#dialog').dialog({
+				autoOpen: false
+			});
+		});
+	</script> -->
 </head>
 <body>
 	<h1>It Works!</h1>
@@ -54,9 +62,9 @@
 				$.ajax({
 					url: "${fords_url}",
 					type: 'POST',
-					//data: formData,
+					/* data: formData, */
 					success: function(data, status) {
-						mc.addMessage('success', ['Success', 'You have successfuly logged in!']);
+						/* mc.addMessage('success', ['Success', 'You have successfuly logged in!']); */
 						mc.addInfo('Success', 'Got JSON data!<br/><strong>Yuppie</strong>');
 						/* if(data.loggedIn) {
 						} else {
@@ -70,11 +78,13 @@
 	</script>
 	
 	<div id="ajaxArea">
-		<form id="ajaxForm" method="post" action="${fords_url}" onsubmit="getAjaxFords();return false;">
+		<form id="ajaxForm" method="post" action="${fords_url}" onsubmit="getAjaxFords(); return false;">
 			<input type="submit" value="Get Fords"/>
 		</form>
 		<button onclick="getAjaxFords();">Get Fords2</button>
 	</div>
+	
+	<div id="dialog" title="Dialog Title">I'm in a dialog</div>
 </body>
 </html>
 

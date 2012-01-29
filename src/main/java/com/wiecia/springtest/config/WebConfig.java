@@ -1,10 +1,15 @@
 package com.wiecia.springtest.config;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.codehaus.jackson.map.ObjectMapper;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
 import org.springframework.orm.hibernate3.support.OpenSessionInViewInterceptor;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
@@ -12,8 +17,10 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.view.ContentNegotiatingViewResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
+import org.springframework.web.servlet.view.json.MappingJacksonJsonView;
 
 @Configuration
 @ComponentScan(basePackages = { "com.wiecia.springtest.web" })
@@ -23,15 +30,37 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	@Autowired
 	SessionFactory sessionFactory;
 
-	@Override
-	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		registry.addResourceHandler("/resources/**").addResourceLocations(
-				"/resources/");
+	@Bean
+	public ContentNegotiatingViewResolver contentNegotiatingViewResolver() {
+		ContentNegotiatingViewResolver cnvr = new ContentNegotiatingViewResolver();
+		cnvr.setOrder(Ordered.HIGHEST_PRECEDENCE);
+		Map<String, String> mediaTypes = new HashMap<String, String>();
+		mediaTypes.put("html", "text/html");
+		mediaTypes.put("pdf", "application/pdf");
+		mediaTypes.put("xls", "application/vnd.ms-excel");
+		mediaTypes.put("xml", "application/xml");
+		mediaTypes.put("json", "application/json");
+		cnvr.setMediaTypes(mediaTypes);
+		return cnvr;
+	}
+
+	@Bean
+	public ViewResolver viewResolver() {
+		InternalResourceViewResolver resolver = new InternalResourceViewResolver();
+		resolver.setOrder(contentNegotiatingViewResolver().getOrder() + 1);
+		resolver.setViewClass(JstlView.class);
+		resolver.setPrefix("/WEB-INF/views/");
+		resolver.setSuffix(".jsp");
+		return resolver;
 	}
 
 	@Override
-	public void configureDefaultServletHandling(
-			DefaultServletHandlerConfigurer configurer) {
+	public void addResourceHandlers(ResourceHandlerRegistry registry) {
+		registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
+	}
+
+	@Override
+	public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
 		configurer.enable();
 	}
 
@@ -43,11 +72,14 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	}
 
 	@Bean
-	public ViewResolver viewResolver() {
-		InternalResourceViewResolver resolver = new InternalResourceViewResolver();
-		resolver.setViewClass(JstlView.class);
-		resolver.setPrefix("/WEB-INF/views/");
-		resolver.setSuffix(".jsp");
-		return resolver;
+	public ObjectMapper jacksonObjectMapper() {
+		return new ObjectMapper();
+	}
+
+	@Bean
+	public MappingJacksonJsonView restJsonMarshalView() {
+		MappingJacksonJsonView view = new MappingJacksonJsonView();
+		view.setObjectMapper(jacksonObjectMapper());
+		return view;
 	}
 }

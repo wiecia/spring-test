@@ -5,10 +5,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 @Entity
+@XmlRootElement
 public class Car extends AbstractEntity {
 
 	private static final long serialVersionUID = -6146537281368286251L;
