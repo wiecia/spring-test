@@ -21,6 +21,11 @@ import org.springframework.web.servlet.view.ContentNegotiatingViewResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 import org.springframework.web.servlet.view.json.MappingJacksonJsonView;
+import org.thymeleaf.TemplateMode;
+import org.thymeleaf.spring3.SpringTemplateEngine;
+import org.thymeleaf.spring3.view.ThymeleafViewResolver;
+import org.thymeleaf.templateresolver.ITemplateResolver;
+import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 @Configuration
 @ComponentScan(basePackages = { "com.wiecia.springtest.web" })
@@ -45,9 +50,34 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	}
 
 	@Bean
-	public ViewResolver viewResolver() {
-		InternalResourceViewResolver resolver = new InternalResourceViewResolver();
+	public ITemplateResolver templeteResolver() {
+		ServletContextTemplateResolver tplResolver = new ServletContextTemplateResolver();
+		tplResolver.setPrefix("/WEB-INF/templates/");
+		tplResolver.setSuffix(".html");
+		tplResolver.setTemplateMode(TemplateMode.XHTML);
+		return tplResolver;
+	}
+
+	@Bean
+	public SpringTemplateEngine templateEngine() {
+		SpringTemplateEngine engine = new SpringTemplateEngine();
+		engine.setTemplateResolver(templeteResolver());
+		return engine;
+	}
+
+	@Bean
+	public ThymeleafViewResolver viewResolver() {
+		ThymeleafViewResolver resolver = new ThymeleafViewResolver();
+		resolver.setTemplateEngine(templateEngine());
 		resolver.setOrder(contentNegotiatingViewResolver().getOrder() + 1);
+		resolver.setViewNames(new String[] { "*.html", "*.xhtml" });
+		return resolver;
+	}
+
+	// @Bean
+	public ViewResolver internalViewResolver() {
+		InternalResourceViewResolver resolver = new InternalResourceViewResolver();
+		resolver.setOrder(contentNegotiatingViewResolver().getOrder() + 2);
 		resolver.setViewClass(JstlView.class);
 		resolver.setPrefix("/WEB-INF/views/");
 		resolver.setSuffix(".jsp");
@@ -56,11 +86,13 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
+		registry.addResourceHandler("/resources/**").addResourceLocations(
+				"/resources/");
 	}
 
 	@Override
-	public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
+	public void configureDefaultServletHandling(
+			DefaultServletHandlerConfigurer configurer) {
 		configurer.enable();
 	}
 
