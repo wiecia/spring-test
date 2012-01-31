@@ -57,6 +57,7 @@ public class PersistenceConfig {
 	@Bean
 	public DataSource dataSource() {
 		return new EmbeddedDatabaseBuilder().setType(EmbeddedDatabaseType.HSQL)
-				.build();
+				.addScript("scripts/schema.sql")
+				.addScript("scripts/addCars.sql").setName("springdb").build();
 	}
 }

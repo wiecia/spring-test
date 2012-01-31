@@ -1,7 +1,7 @@
 <jsp:root version="2.0" xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:jsp="http://java.sun.com/JSP/Page"
 	xmlns:c="http://java.sun.com/jsp/jstl/core"
-	xmlns:form="http://www.springframework.org/tags/form"
+	xmlns:sf="http://www.springframework.org/tags/form"
 	xmlns:s="http://www.springframework.org/tags">
 	
 	<jsp:output doctype-root-element="html"
@@ -14,7 +14,7 @@
 <html>
 <head>
 	<s:url value="/resources/js/jquery.pnotify.js" var="pnotify_js_url"/>
-	<s:url value="/resources/js/jquery-1.7.1.min.js" var="jqueryui_js"/>
+	<s:url value="/resources/js/jquery-ui-1.8.17.custom.min.js" var="jqueryui_js"/>
 	<s:url value="/resources/js/core/messagesController.js" var="sjs_messages"/>
 	
 	<s:url value="/resources/css/jquery.pnotify.default.css" var="pnotify_css_url"/>
@@ -30,13 +30,14 @@
 	<script type="text/javascript" src="${pnotify_js_url}"> <!-- //fixme --> </script>
 	<script type="text/javascript" src="${sjs_messages}"> <!-- //fixme --> </script>
 	
-	<!-- script type="text/javascript">
-	jQuery(document).ready(function() {
+	<script type="text/javascript">
+	$(document).ready(function() {
 			$('#dialog').dialog({
+				modal: true,
 				autoOpen: false
 			});
 		});
-	</script> -->
+	</script>
 </head>
 <body>
 	<h1>It Works!</h1>
@@ -56,7 +57,21 @@
 			mc.addError('Zonk!', 'Something wrooong happened!');
 		};
 
-		jQuery(document).ready(function() {
+		var showData = function(json) {
+			//alert(json[0].carModel);
+			var html = '<ul>';
+			
+			//for (var car in json) {
+	    	$.each(json, function(index, value) {
+	    		html += '<li>' + value.mark + ' ' + value.carModel + '</li>';
+	    	});
+			//var ford = jQuery.parseJSON(car);
+			//html += '<li>' + ford.id + ', ' + ford.carModel + '</li>';
+			html += '</ul>';
+			$('#dialog').html(html).dialog('open');
+		};
+		
+		$(document).ready(function() {
 			var formData = 	$("#ajaxForm").serialize();
 			getAjaxFords = function(data, status) {
 				$.ajax({
@@ -66,10 +81,7 @@
 					success: function(data, status) {
 						/* mc.addMessage('success', ['Success', 'You have successfuly logged in!']); */
 						mc.addInfo('Success', 'Got JSON data!<br/><strong>Yuppie</strong>');
-						/* if(data.loggedIn) {
-						} else {
-							loginFailed(data, status);
-						} */
+						showData(data);
 					},
 					error: reqFailed
 				});
@@ -84,7 +96,7 @@
 		<button onclick="getAjaxFords();">Get Fords2</button>
 	</div>
 	
-	<div id="dialog" title="Dialog Title">I'm in a dialog</div>
+	<div id="dialog" title="Fords listing"></div>
 </body>
 </html>
 
