@@ -24,7 +24,6 @@ import org.springframework.web.servlet.view.json.MappingJacksonJsonView;
 import org.thymeleaf.TemplateMode;
 import org.thymeleaf.spring3.SpringTemplateEngine;
 import org.thymeleaf.spring3.view.ThymeleafViewResolver;
-import org.thymeleaf.templateresolver.ITemplateResolver;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 @Configuration
@@ -50,11 +49,12 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	}
 
 	@Bean
-	public ITemplateResolver templeteResolver() {
+	public ServletContextTemplateResolver templeteResolver() {
 		ServletContextTemplateResolver tplResolver = new ServletContextTemplateResolver();
 		tplResolver.setPrefix("/WEB-INF/templates/");
 		tplResolver.setSuffix(".html");
 		tplResolver.setTemplateMode(TemplateMode.XHTML);
+		tplResolver.setCacheable(false);
 		return tplResolver;
 	}
 
@@ -68,9 +68,9 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	@Bean
 	public ThymeleafViewResolver viewResolver() {
 		ThymeleafViewResolver resolver = new ThymeleafViewResolver();
-		resolver.setTemplateEngine(templateEngine());
 		resolver.setOrder(contentNegotiatingViewResolver().getOrder() + 1);
-		resolver.setViewNames(new String[] { "*.html", "*.xhtml" });
+		resolver.setTemplateEngine(templateEngine());
+		// resolver.setViewNames(new String[] { "*.html", "*.xhtml" });
 		return resolver;
 	}
 
