@@ -9,11 +9,13 @@
 	<link type="text/css" rel="stylesheet" href="../../resources/css/cupertino/jquery-ui-1.8.17.custom.css" th:href="@{/resources/css/cupertino/jquery-ui-1.8.17.custom.css}"/>
 	<link type="text/css" rel="stylesheet" href="../../resources/css/jquery.pnotify.default.css" th:href="@{/resources/css/jquery.pnotify.default.css}"/>
 	<link type="text/css" rel="stylesheet" href="../../resources/css/notification.css" th:href="@{/resources/css/notification.css}"/>
+	<link type="text/css" rel="stylesheet" href="../../resources/css/bootstrap.css" th:href="@{/resources/css/bootstrap.css}"/>
 	
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"> <!-- //fixme --> </script>
 	<script type="text/javascript" src="../../resources/js/jquery-ui-1.8.17.custom.min.js" th:src="@{/resources/js/jquery-ui-1.8.17.custom.min.js}"> <!-- //fixme --> </script>
 	<script type="text/javascript" src="../../resources/js/jquery.pnotify.js" th:src="@{/resources/js/jquery.pnotify.js}"> <!-- //fixme --> </script>
 	<script type="text/javascript" src="../../resources/js/core/messagesController.js" th:src="@{/resources/js/core/messagesController.js}"> <!-- //fixme --> </script>
+	<script type="text/javascript" src="../../resources/js/bootstrap.js" th:src="@{/resources/js/bootstrapr.js}"> <!-- //fixme --> </script>
 	
 	<script type="text/javascript" th:inline="javascript">
 	/*<![CDATA[*/
@@ -27,6 +29,7 @@
 	</script>
 </head>
 <body>
+<div class="container">
 	<h1>It Works - with Thymeleaf</h1>
 	
 	<ul>
@@ -68,11 +71,12 @@
 	
 	<div id="ajaxArea">
 		<form id="ajaxForm" method="post" action="#" th:action="@{/getFords}" onsubmit="getAjaxFords(); return false;">
-			<input type="submit" value="Get Fords"/>
+			<button class="btn" type="submit">Get Fords</button>
 		</form>
-		<button onclick="getAjaxFords();">Get Fords2</button>
+		<button class="btn btn-primary" onclick="getAjaxFords();">Get Fords2</button>
 	</div>
 	
 	<div id="dialog" title="Fords listing"></div>
+</div>	
 </body>
 </html>

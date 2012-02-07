@@ -17,7 +17,8 @@ import com.wiecia.springtest.db.model.Car;
 import com.wiecia.springtest.service.PersonService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = { ApplicationConfig.class, PersistenceConfig.class })
+@ContextConfiguration(classes = { ApplicationConfig.class,
+		PersistenceConfig.class })
 public class EntityTest extends TestCase {
 
 	@Autowired
@@ -32,7 +33,7 @@ public class EntityTest extends TestCase {
 		assertNotNull(personService);
 	}
 
-	@Test
+	// @Test
 	public void shouldLoadCarsFromDb() {
 		// given
 		Car car = new Car();
@@ -42,7 +43,8 @@ public class EntityTest extends TestCase {
 		sessionFactory.getCurrentSession().save(car);
 
 		// when
-		Criteria crit = sessionFactory.getCurrentSession().createCriteria(Car.class);
+		Criteria crit = sessionFactory.getCurrentSession().createCriteria(
+				Car.class);
 		crit.add(Restrictions.eq("mark", "Ford"));
 
 		// then
