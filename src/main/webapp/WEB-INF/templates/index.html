@@ -15,21 +15,43 @@
 	<script type="text/javascript" src="../../resources/js/jquery-ui-1.8.17.custom.min.js" th:src="@{/resources/js/jquery-ui-1.8.17.custom.min.js}"> <!-- //fixme --> </script>
 	<script type="text/javascript" src="../../resources/js/jquery.pnotify.js" th:src="@{/resources/js/jquery.pnotify.js}"> <!-- //fixme --> </script>
 	<script type="text/javascript" src="../../resources/js/core/messagesController.js" th:src="@{/resources/js/core/messagesController.js}"> <!-- //fixme --> </script>
-	<script type="text/javascript" src="../../resources/js/bootstrap.js" th:src="@{/resources/js/bootstrapr.js}"> <!-- //fixme --> </script>
+	<script type="text/javascript" src="../../resources/js/bootstrap.js" th:src="@{/resources/js/bootstrap.js}"> <!-- //fixme --> </script>
 	
 	<script type="text/javascript" th:inline="javascript">
 	/*<![CDATA[*/
-	$(document).ready(function() {
+		$(document).ready(function() {
 			$('#dialog').dialog({
 				modal: true,
 				autoOpen: false
 			});
+			$().alert();
 		});
 	/*]]>*/
 	</script>
+	<script type="text/javascript" th:inline="javascript" th:if="${redirectMessage}">
+		$(document).ready(function(){
+			var mc = new SJS.MessagesController();
+			mc.addInfo('Redirect message', [[${redirectMessage}]]);
+		});
+	</script>
 </head>
 <body>
+<div class="navbar ">
+	<div class="navbar-inner">
+		<div class="container">
+			<a class="brand" href="#">spring-test</a>
+		</div>
+	</div>
+</div>
+
 <div class="container">
+
+    <div class="alert alert-block alert-success fade in" th:if="${redirectMessage}">
+    	<a class="close" data-dismiss="alert" href="#">&times;</a>
+    	<h4 class="alert-heading">Redirect message</h4>
+    	<span th:text="${redirectMessage}">Some message goes here...</span>
+    </div>
+
 	<h1>It Works - with Thymeleaf</h1>
 	
 	<ul>
@@ -59,8 +81,12 @@
 					url: [[@{/getFords}]],
 					type: 'POST',
 					success: function(data, status) {
-						mc.addInfo('Success', 'Got JSON data!<br/><strong>Yuppie</strong>');
-						showData(data);
+						if(data.length==0) {
+							mc.addError('Whoops', 'Looks like there are no Fords available :-(');
+						} else {
+							mc.addInfo('Success', 'Got JSON data!<br/><strong>Yuppie</strong>');
+							showData(data);
+						}
 					},
 					error: reqFailed
 				});
@@ -69,12 +95,28 @@
 		/*]]>*/
 	</script>
 	
+	<div>
+		<form action="#" th:action="@{/addStuff}" method="post">
+			<button class="btn" type="submit">
+				<i class="icon-plus"></i>
+				Add some stuff...
+			</button>
+		</form>
+	</div>
+	
 	<div id="ajaxArea">
 		<form id="ajaxForm" method="post" action="#" th:action="@{/getFords}" onsubmit="getAjaxFords(); return false;">
-			<button class="btn" type="submit">Get Fords</button>
+			<button class="btn" type="submit">
+				<i class="icon-leaf"></i>
+				Get Fords
+			</button>
 		</form>
-		<button class="btn btn-primary" onclick="getAjaxFords();">Get Fords2</button>
 	</div>
+	
+	<a href="#" class="btn btn-danger" th:href="@{/clearDb}" th:unless="${#lists.isEmpty(people)}">
+		<i class="icon-trash"></i>
+		Clear DB
+	</a>
 	
 	<div id="dialog" title="Fords listing"></div>
 </div>	

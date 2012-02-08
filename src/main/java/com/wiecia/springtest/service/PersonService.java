@@ -12,7 +12,6 @@ import com.wiecia.springtest.db.model.Animal;
 import com.wiecia.springtest.db.model.Person;
 
 @Service
-@Transactional
 public class PersonService {
 
 	GenericDAO<Person> dao;
@@ -43,6 +42,7 @@ public class PersonService {
 		return carDao;
 	}
 
+	@Transactional
 	public void save(Person person) {
 		dao.save(person);
 	}
@@ -50,5 +50,10 @@ public class PersonService {
 	@Transactional(readOnly = true)
 	public List<Person> getAll() {
 		return dao.findAll();
+	}
+
+	@Transactional
+	public void deleteAll() {
+		dao.delete(getAll());
 	}
 }

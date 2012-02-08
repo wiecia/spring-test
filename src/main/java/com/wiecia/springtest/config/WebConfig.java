@@ -21,7 +21,6 @@ import org.springframework.web.servlet.view.ContentNegotiatingViewResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 import org.springframework.web.servlet.view.json.MappingJacksonJsonView;
-import org.thymeleaf.TemplateMode;
 import org.thymeleaf.spring3.SpringTemplateEngine;
 import org.thymeleaf.spring3.view.ThymeleafViewResolver;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
@@ -53,7 +52,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 		ServletContextTemplateResolver tplResolver = new ServletContextTemplateResolver();
 		tplResolver.setPrefix("/WEB-INF/templates/");
 		tplResolver.setSuffix(".html");
-		tplResolver.setTemplateMode(TemplateMode.XHTML);
+		// tplResolver.setTemplateMode(TemplateMode.XHTML);
 		tplResolver.setCacheable(false);
 		return tplResolver;
 	}
