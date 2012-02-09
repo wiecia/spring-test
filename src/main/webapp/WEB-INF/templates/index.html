@@ -47,14 +47,15 @@
 <div class="container">
 
     <div class="alert alert-block alert-success fade in" th:if="${redirectMessage}">
-    	<a class="close" data-dismiss="alert" href="#">&times;</a>
+    	<!-- data-dismiss="alert"  -->
+    	<a class="close" href="#" onclick="$(this).alert('close');">&times;</a>
     	<h4 class="alert-heading">Redirect message</h4>
     	<span th:text="${redirectMessage}">Some message goes here...</span>
     </div>
 
 	<h1>It Works - with Thymeleaf</h1>
 	
-	<ul>
+	<ul th:unless="${#lists.isEmpty(people)}">
 		<li th:each="p : ${people}" th:inline="text">[[${p.name}]], [[${p.age}]] - [[${p.email}]]</li>
 	</ul>
 	
@@ -117,6 +118,8 @@
 		<i class="icon-trash"></i>
 		Clear DB
 	</a>
+	<hr/>
+	<div th:include="footer :: footer"></div>
 	
 	<div id="dialog" title="Fords listing"></div>
 </div>	
