@@ -75,6 +75,16 @@
 			$('#dialog').html(html).dialog('open');
 		};
 		
+		var showModalResult = function(json) {
+			var html = '<ul>';
+	    	$.each(json, function(index, value) {
+	    		html += '<li>' + value.mark + ' ' + value.carModel + '</li>';
+	    	});
+			html += '</ul>';
+			$('#resModalBody').html(html);
+			$('#resModal').modal();
+		};
+		
 		$(document).ready(function() {
 			var formData = 	$("#ajaxForm").serialize();
 			getAjaxFords = function(data, status) {
@@ -86,7 +96,7 @@
 							mc.addError('Whoops', 'Looks like there are no Fords available :-(');
 						} else {
 							mc.addInfo('Success', 'Got JSON data!<br/><strong>Yuppie</strong>');
-							showData(data);
+							showModalResult(data);
 						}
 					},
 					error: reqFailed
@@ -122,6 +132,20 @@
 	<div th:include="footer :: footer"></div>
 	
 	<div id="dialog" title="Fords listing"></div>
+
+	<div id="resModal" class="modal fade">
+		<div class="modal-header">
+			<a class="close" data-dismiss="modal">&times;</a>
+			<h3>Fords listing</h3>
+		</div>
+		<div id="resModalBody" class="modal-body">
+			<p>One fine body</p>
+		</div>
+		<!-- <div class="modal-footer">
+			<a href="#" class="btn btn-primary">Save changes</a> <a href="#"
+				class="btn">Close</a>
+		</div> -->
+	</div>
 </div>	
 </body>
 </html>
