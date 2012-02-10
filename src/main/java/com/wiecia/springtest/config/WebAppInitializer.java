@@ -20,6 +20,10 @@ public class WebAppInitializer implements WebApplicationInitializer {
 		AnnotationConfigWebApplicationContext rootCtx = new AnnotationConfigWebApplicationContext();
 		rootCtx.scan("com.wiecia.springtest.config");
 
+		sc.setInitParameter("defaultHtmlEscape", "true");
+
+		sc.setInitParameter("log4jConfigLocation",
+				"classpath:/META-INF/conf/log4j.properties");
 		sc.addListener(new Log4jConfigListener());
 		sc.addListener(new ContextLoaderListener(rootCtx));
 
@@ -30,9 +34,11 @@ public class WebAppInitializer implements WebApplicationInitializer {
 		encodingFilter.setInitParameter("forceEncoding", "true");
 		encodingFilter.addMappingForUrlPatterns(null, false, "/*");
 
+		// Main dispatcher servlet
 		ServletRegistration.Dynamic appServlet = sc.addServlet("appServlet",
 				new DispatcherServlet(new GenericWebApplicationContext()));
 		appServlet.setLoadOnStartup(1);
 		appServlet.addMapping("/");
+
 	}
 }
