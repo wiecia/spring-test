@@ -11,7 +11,6 @@ import org.springframework.web.context.support.AnnotationConfigWebApplicationCon
 import org.springframework.web.context.support.GenericWebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.DispatcherServlet;
-import org.springframework.web.util.Log4jConfigListener;
 
 public class WebAppInitializer implements WebApplicationInitializer {
 
@@ -22,9 +21,12 @@ public class WebAppInitializer implements WebApplicationInitializer {
 
 		sc.setInitParameter("defaultHtmlEscape", "true");
 
-		sc.setInitParameter("log4jConfigLocation",
-				"classpath:/META-INF/conf/log4j.properties");
-		sc.addListener(new Log4jConfigListener());
+		// sc.setInitParameter("log4jConfigLocation",
+		// "classpath:/META-INF/conf/log4j.properties");
+		// sc.addListener(new Log4jConfigListener());
+
+		sc.setInitParameter("logback.configurationFile",
+				"classpath:/META-INF/conf/logback.xml");
 		sc.addListener(new ContextLoaderListener(rootCtx));
 
 		// enconding filter

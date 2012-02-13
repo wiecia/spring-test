@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- For assistance related to logback-translator or configuration -->
+<!-- files in general, please contact the logback user mailing list -->
+<!-- at http://www.qos.ch/mailman/listinfo/logback-user -->
+<!-- -->
+<!-- For professional support please see -->
+<!-- http://www.qos.ch/shop/products/professionalSupport -->
+<!-- -->
+<configuration scan="true" scanPeriod="30 seconds">
+	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+		<!-- Target>System.out</Target -->
+		<encoder>
+			<!-- {HH:mm:ss.SSS} -->
+			<pattern>%d %-5level %logger{26} - %msg%n</pattern>
+		</encoder>
+	</appender>
+	<logger name="org.springframework" level="INFO" />
+	<logger name="org.codehaus.jackson" level="DEBUG" />
+	<logger name="org.springframework.transaction" level="DEBUG" />
+	<logger name="org.springframework.context" level="WARN" />
+	<logger name="org.springframework.security" level="INFO" />
+	<logger name="org.hibernate" level="WARN" />
+	<logger name="org.apache.catalina.startup" level="ERROR" />
+	<logger name="org.thymeleaf" level="WARN" />
+	
+	<root level="INFO">
+		<appender-ref ref="CONSOLE" />
+	</root>
+</configuration>
